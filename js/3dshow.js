@@ -1,8 +1,9 @@
-import * as THREE from 'https://cdn.skypack.dev/three'
+import * as THREE from './third-party/three/three.module.js'
 
 let camera, scene, renderer;
 let geometry, material, mesh;
 
+console.log("OK,rain");
 init();
 
 function init() {
