@@ -1,14 +1,13 @@
-import * as THREE from './third-party/three/three.module.js'
+import * as THREE from './third-party/three/build/three.module.js'
 
 let camera, scene, renderer;
 let geometry, material, mesh;
 
-console.log("OK,rain");
 init();
 
 function init() {
 
-    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+    camera = new THREE.PerspectiveCamera( 10, window.innerWidth / window.innerHeight, 0.01, 10 );
     camera.position.z = 1;
 
     scene = new THREE.Scene();

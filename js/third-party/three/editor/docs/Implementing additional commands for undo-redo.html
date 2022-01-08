@@ -1,0 +1,93 @@
+<h1 id="How-to-implement-additional-commands-for-undo-redo-functionality"><a href="#How-to-implement-additional-commands-for-undo-redo-functionality" class="headerlink" title="How to implement additional commands for undo/redo functionality?"></a>How to implement additional commands for undo/redo functionality?</h1><h3 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h3><p>After evaluating different design patterns for undo/redo we decided to use the <a href="http://en.wikipedia.org/wiki/Command_pattern">command-pattern</a> for implementing undo/redo functionality in the three.js-editor.</p>
+<p>This means that every action is encapsulated in a command-object which contains all the relevant information to restore the previous state.</p>
+<p>In our implementation we store the old and the new state separately (we don’t store the complete state but rather the attribute and value which has changed).<br>It would also be possible to only store the difference between the old and the new state.</p>
+<p><strong>Before implementing your own command you should look if you can’t reuse one of the already existing ones.</strong></p>
+<p>For numbers, strings or booleans the Set…ValueCommand-commands can be used.<br>Then there are separate commands for:</p>
+<ul>
+<li>setting a color property (THREE.Color)</li>
+<li>setting maps (THREE.Texture)</li>
+<li>setting geometries</li>
+<li>setting materials</li>
+<li>setting position, rotation and scale</li>
+</ul>
+<h3 id="Template-for-new-commands"><a href="#Template-for-new-commands" class="headerlink" title="Template for new commands"></a>Template for new commands</h3><p>Every command needs a constructor. In the constructor</p>
+<pre><code class="javascript">
+function DoSomethingCommand( editor ) {
+
+    Command.call( this, editor ); // Required: Call default constructor
+
+    this.type = &#39;DoSomethingCommand&#39;;            // Required: has to match the object-name!
+    this.name = &#39;Set/Do/Update Something&#39;; // Required: description of the command, used in Sidebar.History
+
+    // TODO: store all the relevant information needed to
+    // restore the old and the new state
+
+}
+</code></pre>
+<p>And as part of the prototype you need to implement four functions</p>
+<ul>
+<li><strong>execute:</strong> which is also used for redo</li>
+<li><strong>undo:</strong> which reverts the changes made by ‘execute’</li>
+<li><strong>toJSON:</strong> which serializes the command so that the undo/redo-history can be preserved across a browser refresh</li>
+<li><strong>fromJSON:</strong> which deserializes the command</li>
+</ul>
+<pre><code class="javascript">DoSomethingCommand.prototype = {
+
+    execute: function () {
+
+        // TODO: apply changes to &#39;object&#39; to reach the new state
+
+    },
+
+    undo: function () {
+
+        // TODO: restore &#39;object&#39; to old state
+
+    },
+
+    toJSON: function () {
+
+        var output = Command.prototype.toJSON.call( this ); // Required: Call &#39;toJSON&#39;-method of prototype &#39;Command&#39;
+
+        // TODO: serialize all the necessary information as part of &#39;output&#39; (JSON-format)
+        // so that it can be restored in &#39;fromJSON&#39;
+
+        return output;
+
+    },
+
+    fromJSON: function ( json ) {
+
+        Command.prototype.fromJSON.call( this, json ); // Required: Call &#39;fromJSON&#39;-method of prototype &#39;Command&#39;
+
+        // TODO: restore command from json
+
+    }
+
+};
+</code></pre>
+<h3 id="Executing-a-command"><a href="#Executing-a-command" class="headerlink" title="Executing a command"></a>Executing a command</h3><p>To execute a command we need an instance of the main editor-object. The editor-object functions as the only entry point through which all commands have to go to be added as part of the undo/redo-history.<br>On <strong>editor</strong> we then call <strong>.execute(…)</strong>* with the new command-object which in turn calls <strong>history.execute(…)</strong> and adds the command to the undo-stack.</p>
+<pre><code class="javascript">
+editor.execute( new DoSomethingCommand() );
+</code></pre>
+<h3 id="Updatable-commands"><a href="#Updatable-commands" class="headerlink" title="Updatable commands"></a>Updatable commands</h3><p>Some commands are also <strong>updatable</strong>. By default a command is not updatable. Making a command updatable means that you<br>have to implement a fifth function ‘update’ as part of the prototype. In it only the ‘new’ state gets updated while the old one stays the same.</p>
+<p>Here as an example is the update-function of <strong>SetColorCommand</strong>:</p>
+<pre><code class="javascript">update: function ( cmd ) {
+
+    this.newValue = cmd.newValue;
+
+},
+</code></pre>
+<h4 id="List-of-updatable-commands"><a href="#List-of-updatable-commands" class="headerlink" title="List of updatable commands"></a>List of updatable commands</h4><ul>
+<li>SetColorCommand</li>
+<li>SetGeometryCommand</li>
+<li>SetMaterialColorCommand</li>
+<li>SetMaterialValueCommand</li>
+<li>SetPositionCommand</li>
+<li>SetRotationCommand</li>
+<li>SetScaleCommand</li>
+<li>SetValueCommand</li>
+<li>SetScriptValueCommand</li>
+</ul>
+<p>The idea behind ‘updatable commands’ is that two commands of the same type which occur<br>within a short period of time should be merged into one.<br><strong>For example:</strong> Dragging with your mouse over the x-position field in the sidebar<br>leads to hundreds of minor changes to the x-position.<br>The user expectation is not to undo every single change that happened while he dragged<br>the mouse cursor but rather to go back to the position before he started to drag his mouse.</p>
+<p>When editing a script the changes are also merged into one undo-step.</p>

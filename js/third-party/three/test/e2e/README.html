@@ -1,0 +1,48 @@
+<h1 id="Three-js-end-to-end-testing"><a href="#Three-js-end-to-end-testing" class="headerlink" title="Three.js end-to-end testing"></a>Three.js end-to-end testing</h1><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>Simplify code reviews with quick pixel testing inside CI. The same screenshots are used for thumbnails.</p>
+<h3 id="Local-usage"><a href="#Local-usage" class="headerlink" title="Local usage"></a>Local usage</h3><p>If you get an error in e2e test after PR and you sure that all is correct,<br>just make a new screenshot to example. As a last resort increase timeouts or add it to exception list.</p>
+<pre><code class="shell"># generate new screenshots for exact examples
+npm run make-screenshot &lt;example1_name&gt; ... &lt;exampleN_name&gt;
+
+# check exact examples
+npm run test-e2e &lt;example1_name&gt; ... &lt;exampleN_name&gt;
+
+# check all examples
+npm run test-e2e
+</code></pre>
+<p>Merge only those commits that pass the tests, otherwise all next commits will also fail.</p>
+<h3 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h3><ul>
+<li>ci configs with parallelism</li>
+<li>deterministic random/timer/rAF/video for screenshots</li>
+<li>increased robustness with hided text, datgui, different flags and timeouts.</li>
+<li>pipeline: turn off rAF -&gt; ‘networkidle0’ -&gt; networkTax -&gt; turn on rAF -&gt; render promise</li>
+<li>added 3 progressive attempts for robustness</li>
+</ul>
+<h3 id="Development-progress"><a href="#Development-progress" class="headerlink" title="Development progress"></a>Development progress</h3><table>
+<thead>
+<tr>
+<th>Travis</th>
+<th>Attempts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>61 from 362 failed, time=21:14</td>
+<td>networkidle0 timeout</td>
+</tr>
+<tr>
+<td>26 from 362 failed, time=16:22</td>
+<td>with rAF hook</td>
+</tr>
+<tr>
+<td>13=1+1+7+4 failed, time=4:26</td>
+<td>with render promise and parallelism</td>
+</tr>
+<tr>
+<td>4=0+0+2+2 failed, time=5:13</td>
+<td>with network tax and other settings</td>
+</tr>
+<tr>
+<td>4=0+0+2+2 failed, time=3:26</td>
+<td>with progressive attempts</td>
+</tr>
+</tbody></table>
+<h3 id="Status"><a href="#Status" class="headerlink" title="Status"></a>Status</h3><p>97% examples are covered with tests. Check exception list for more information.</p>
