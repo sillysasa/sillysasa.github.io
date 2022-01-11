@@ -45,8 +45,8 @@ loader.setDRACOLoader( dracoLoader );
 loader.load( '/models/division/glb/division.glb', function ( gltf ) {
 
     const model = gltf.scene;
-    model.position.set( -6.1, 0, 0 );
-    model.scale.set( 0.07, 0.07, 0.07 );
+    model.position.set( 0, 0, 0 );
+    model.scale.set( 0.02, 0.02, 0.02 );
     scene.add( model );
 
     // mixer = new THREE.AnimationMixer( model );
