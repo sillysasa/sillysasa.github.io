@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
   <meta name="color-scheme" content="light dark">
   
-  <title>tag: model - Xin&#39;s Bakery</title>
+  <title>SD安装文档 - Xin&#39;s Bakery</title>
   
     <link rel="shortcut icon" href="/theme-img/favicon/favicon-32x32-next.png">
   
@@ -102,45 +102,88 @@
         </div>
     </div>
 </nav>
-        <div class="container">
-    
+        <article class="post">
+    <div class="meta">
+        
+        <div class="date" id="date">
+            
+            
+            
+            
+            <span>April</span>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <span>12,</span>
+            <span>2023</span>
+        </div>
+        
 
-    <div class="post-list">
-        
-        <article class="post-list-item">
-            <a href="/2022/01/08/AXE/">
-                
-                <div class="content">
-                    <div class="title">
-                        Real one
-                    </div>
-                    
-                    <div class="time">
-                        
-                        <span>January</span>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <span>&nbsp;8,&nbsp;</span>
-                        <span>2022</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
+        <h2 class="title">SD安装文档</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="Stable-Diffusion-安装小说明"><a href="#Stable-Diffusion-安装小说明" class="headerlink" title="Stable Diffusion 安装小说明"></a>Stable Diffusion 安装小说明</h1><p>学姐专用SD安装文档 <code>v0.1</code></p>
+<h2 id="1-🗺-安装环境准备"><a href="#1-🗺-安装环境准备" class="headerlink" title="1.   🗺 安装环境准备"></a>1.   🗺 安装环境准备</h2><h3 id="1-1-🍺Homebrew安装"><a href="#1-1-🍺Homebrew安装" class="headerlink" title="1.1 🍺Homebrew安装"></a>1.1 🍺Homebrew安装</h3><p><strong>Homebrew</strong>是一款Mac OS平台下的软件包管理工具，拥有安装、卸载、更新、查看、搜索等很多实用的功能。在本次安装之旅中扮演了安装<code>python</code>以及一些乱七巴糟的库的角色（什么巴库？）。好！现在出发8心老师！</p>
+<p>①. 把它收入囊中吧！！打开📺<code>Terminal</code>输入下边命令。期间按照提示输入密码。当出现 <code>==&gt; Installation successful!</code>时，恭喜安装成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>②. 来看看超简单的基本命令吧！！在📺<code>Terminal</code>里输入哦！</p>
+<ul>
+<li><p>软件安装：<code>brew install 软件名</code></p>
+<p>  举个栗子：<code>brew install wget</code></p>
+</li>
+<li><p>软件卸载：<code>brew uninstall 软件名</code></p>
+<p>  举个栗子：<code>brew uninstall wget</code></p>
+</li>
+<li><p>  都装了啥啊啊啊啊啊：<code>brew list</code></p>
+</li>
+<li><p>  遇到困难睡大觉：<code>brew help</code></p>
+</li>
+</ul>
+<h3 id="1-2-🥁学姐逃不掉的Python3-10一家子安装"><a href="#1-2-🥁学姐逃不掉的Python3-10一家子安装" class="headerlink" title="1.2 🥁学姐逃不掉的Python3.10一家子安装"></a>1.2 🥁学姐逃不掉的Python3.10一家子安装</h3><p>主要是Python以及python下实用的工具库。</p>
+<p>直接开始咏唱魔法！继续在📺<code>Terminal</code>里告诉你的🍺<code>brew</code>小跟班该安装些啥吧！！！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install cmake protobuf rust python@3.10 git wget</span><br></pre></td></tr></table></figure>
+
+<p>就这么简单，完事儿了已经。</p>
+<h3 id="1-3-✨喜提Stable-Diffusion的Web的UI"><a href="#1-3-✨喜提Stable-Diffusion的Web的UI" class="headerlink" title="1.3 ✨喜提Stable Diffusion的Web的UI"></a>1.3 ✨喜提Stable Diffusion的Web的UI</h3><p><code>Stable Diffusion</code>只是一个AI模型，大伙儿们一起建了个界面，是基于Web的UI，所以叫做<code>webui</code>！</p>
+<p>①. 📺<code>Terminal</code>里，先去你的办公桌，新建一个叫<code>aigc</code>的文件夹，这就是<code>Stable Diffusion</code>待会儿下载的地方。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/学姐用户名/</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p aigc &amp; cd aigc</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>②. 用一个叫做<code>git</code>的工具从基佬霍卜上把这个项目的Repository给下载下来，拎包入住。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git</span><br></pre></td></tr></table></figure>
+
+<p>现在进房间看看吧，打开它！！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd stable-diffusion-webui</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./webui.sh</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    <div class="about">
+        <h1>About this Post</h1>
+        <p>This post is written by Xin, licensed under <a
+                target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
     </div>
 
     
-</div>
+        
+    
+</article>
         <footer>
     <div class="inner">
         <div class="links">
